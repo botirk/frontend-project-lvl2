@@ -8,8 +8,8 @@ const buildDif = (obj1, obj2, path = []) => {
     const subresult = {};
     subresult.path = path.slice().concat(k);
     subresult.pathJoin = () => subresult.path.join('.');
-    subresult.typeBefore = typeof v;
-    subresult.typeAfter = typeof obj2[k];
+    if(v === null) subresult.typeBefore = 'null'; else subresult.typeBefore = typeof v;
+    if (obj2[k] === null) subresult.typeAfter = 'null'; else subresult.typeAfter = typeof obj2[k];
     subresult.valueBefore = v;
     subresult.valueAfter = obj2[k];
 
