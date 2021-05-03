@@ -10,6 +10,7 @@ export default (file) => {
   switch (ext) {
     case '.json':
       return JSON.parse(str);
+    case '.yml':
     case '.yaml':
       return yaml.load(str, { schema: yaml.JSON_SCHEMA, json: true });
     case '.ini':
