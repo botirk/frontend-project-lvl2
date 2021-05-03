@@ -39,7 +39,7 @@ const buildDif = (obj1, obj2, path = []) => {
       const subresult = {};
       subresult.path = path.slice().concat(k);
       subresult.pathJoin = () => subresult.path.join('.');
-      subresult.typeAfter = typeof v;
+      if (obj2[k] === null) subresult.typeAfter = 'null'; else subresult.typeAfter = typeof obj2[k];
       subresult.valueAfter = v;
       if (subresult.typeAfter === 'object') subresult.dif = 'object_created';
       else subresult.dif = 'created';
