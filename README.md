@@ -2,8 +2,10 @@
 [![Actions Status](https://github.com/botirk/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/botirk/frontend-project-lvl2/actions)
 ### Codeclimate code quality:
 [![Maintainability](https://api.codeclimate.com/v1/badges/7ac0f7fcbdf5ab7da43e/maintainability)](https://codeclimate.com/github/botirk/frontend-project-lvl2/maintainability)
-### Github Actions: Jest & Eslint:
-[![Node.js CI](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js.yml/badge.svg)](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js.yml)
+### Github Actions: Eslint
+[![Node.js linter](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js%20lint.yml/badge.svg)](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js%20lint.yml)
+### Github Actions: Jest
+[![Node.js tests](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js%20tests.yml/badge.svg)](https://github.com/botirk/frontend-project-lvl2/actions/workflows/node.js%20tests.yml)
 
 ### Usage example: plain .JSON
 [![asciicast](https://asciinema.org/a/wajqfwq4vxZ7sZaEW8ZjnY4wA.svg)](https://asciinema.org/a/wajqfwq4vxZ7sZaEW8ZjnY4wA)
