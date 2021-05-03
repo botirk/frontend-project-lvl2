@@ -2,7 +2,7 @@
 const visual = {};
 visual.tab = '   ';
 visual.genStr = (tabLevel, str) => {
-  const result = visual.tab.repeat(tabLevel) + str;
+  const result = visual.tab.repeat(tabLevel) + ' ' + str;
   if (result[result.length - 1] === '\n') return result;
   return `${result}\n`;
 };
