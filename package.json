@@ -1,0 +1,32 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "compare two configs (.json & .yml)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/botirk/frontend-project-lvl2.git"
+  },
+  "keywords": [
+    "study",
+    "learning",
+    "json",
+    "yml"
+  ],
+  "author": "Ivan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/botirk/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/botirk/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^7.2.0",
+    "ini": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21"
+  },
+  "type": "module"
+}
