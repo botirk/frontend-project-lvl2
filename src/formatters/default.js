@@ -19,6 +19,9 @@ JSON.stringify2 = (tabLevel, obj) => {
   }
   return result + visual.genFinish(tabLevel);
 };
+Object.entries2 = (obj) => {
+  return _.sortBy(obj.entries(),(a) => a[0]);
+}
 
 visual.object_sign = (tabLevel, k, v, sign) => {
   const vRE = (sign === '+') ? v.valueAfter : v.valueBefore;
