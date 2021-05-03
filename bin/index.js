@@ -8,8 +8,8 @@ program.version('1.0.0')
   .name("gendiff")
   .arguments('<firstConfig> <secondConfig>')
   .description('Compares two configuration files and shows a difference.')
-  .option('-f, --format [type]', 'Output format')
+  .option('-f, --format [type]', 'Output format', 'stylish')
   .action((first, second) => {
-    console.log(genDiff(first, second, program.opts().format ?? 'default'));
+    console.log(genDiff(first, second, program.opts().format));
   });
 program.parse(process.argv);
