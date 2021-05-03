@@ -1,8 +1,8 @@
 // visualize default
 const visual = {};
-visual.tab = '   ';
+visual.tab = ' ';
 visual.genStr = (tabLevel, str) => {
-  const result = visual.tab.repeat(tabLevel) + ' ' + str;
+  const result = visual.tab.repeat(tabLevel * 3) + str;
   if (result[result.length - 1] === '\n') return result;
   return `${result}\n`;
 };
