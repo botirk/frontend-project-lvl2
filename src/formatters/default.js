@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 // visualize default
 const visual = {};
 visual.tab = ' ';
@@ -39,7 +41,7 @@ visual.changed = (tabLevel, k, v) => visual.deleted(tabLevel, k, v) + visual.cre
 
 visual.ize = (difs, tabLevel = 0) => {
   let result = visual.genStart();
-  for (const [k, v] of Object.entries(difs).sort((a,b) => a[0] - b[0])) {
+  for (const [k, v] of _.sortBy(Object.entries(difs),(a) => a[0])) {
     if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
     result += visual[v.dif](tabLevel, k, v);
   }
