@@ -15,3 +15,5 @@
 [![asciicast](https://asciinema.org/a/oFsLap8Nw6hONzT48udgPh5lt.svg)](https://asciinema.org/a/oFsLap8Nw6hONzT48udgPh5lt)
 ### Usage example: nested .JSON --format plain
 [![asciicast](https://asciinema.org/a/KqO4enyn5vI7J1T1YMUi5cexN.svg)](https://asciinema.org/a/KqO4enyn5vI7J1T1YMUi5cexN)
+### Usage example: nested .JSON --format json
+[![asciicast](https://asciinema.org/a/gR0LVXj4fiqMyHRKJrkq8n7yW.svg)](https://asciinema.org/a/gR0LVXj4fiqMyHRKJrkq8n7yW)
