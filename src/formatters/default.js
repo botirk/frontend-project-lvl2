@@ -12,14 +12,14 @@ visual.genFinish = (tabLevel) => visual.genStr(tabLevel, '}');
 JSON.stringify2 = (tabLevel, obj) => {
   let result = visual.genStart();
   for (const [k, v] of Object.entries(obj)) {
-    if (typeof v === 'object') // todo
+    if (typeof v === 'object' && v !== null) // todo
     { result += JSON.stringify2(tabLevel + 1, v); } else result += visual.genStr(tabLevel + 1, `${k}: ${v}`);
   }
   return result + visual.genFinish(tabLevel);
 };
 
 visual.object_sign = (tabLevel, k, v, sign) => {
-  const vRE = sign === '+' ? v.valueAfter : v.valueBefore;
+  const vRE = (sign === '+') ? v.valueAfter : v.valueBefore;
   return visual.genStr(tabLevel, ` ${sign} ${k}: ${JSON.stringify2(tabLevel + 1, vRE)}`);
 };
 
