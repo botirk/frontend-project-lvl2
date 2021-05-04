@@ -21,6 +21,9 @@ test-run-plain:
 
 test-run-format-json:
 	bin/index.js --format json __fixtures__/nested_dif_before.json __fixtures__/nested_dif_after.json
+
+test-run-hexlet:
+	bin/index.js __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
 	
 lint:
 	npx eslint .

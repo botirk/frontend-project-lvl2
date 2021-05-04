@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { typeofEx } from './../buildDif.js';
 
 // visualize default
 const visual = {};
@@ -14,8 +15,10 @@ visual.genFinish = (tabLevel) => visual.genStr(tabLevel, '}');
 JSON.stringify2 = (tabLevel, obj) => {
   let result = visual.genStart();
   for (const [k, v] of Object.entries2(obj)) {
-    if (typeof v === 'object' && v !== null) // todo
-    { result += JSON.stringify2(tabLevel + 1, v); } else result += visual.genStr(tabLevel + 1, `${k}: ${v}`);
+    if (typeofEx(v) === 'object')
+      result += visual.genStr(tabLevel + 1, `${k}: ${JSON.stringify2(tabLevel + 1, v)}`); 
+    else 
+      result += visual.genStr(tabLevel + 1, `${k}: ${v}`);
   }
   return result + visual.genFinish(tabLevel);
 };

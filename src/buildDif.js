@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const typeofEx = (v) => {
+export const typeofEx = (v) => {
   if (v === null) return 'null';
   return typeof v;
 }
@@ -46,6 +46,7 @@ const buildDif = (obj1, obj2, path = []) => {
       subresult.pathJoin = () => subresult.path.join('.');
       subresult.typeAfter = typeofEx(v);
       subresult.valueAfter = v;
+
       if (subresult.typeAfter === 'object') subresult.dif = 'object_created';
       else subresult.dif = 'created';
 
@@ -53,6 +54,7 @@ const buildDif = (obj1, obj2, path = []) => {
     }
   }
 
+  //console.log(result);
   return result;
 };
 
