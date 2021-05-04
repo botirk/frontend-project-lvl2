@@ -1,5 +1,5 @@
 import { typeofEx } from '../buildDif.js'; 
-import { entries2 } from './default';
+import { entries2 } from './default.js';
 
 const visual = {};
 visual.genStr = (str) => {
