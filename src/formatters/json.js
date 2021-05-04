@@ -1,21 +1,28 @@
+/* eslint-disable import/extensions */
 import _ from 'lodash';
+import { values2 } from './default.js';
 
 const visual = {};
 
-visual.object_created = visual.created = (v, result) => result.CREATE[v.pathJoin()] = v.valueAfter;
+visual.object_created = (v) => ({ CREATE: { [v.pathJoin()]: v.valueAfter } });
+visual.created = visual.object_created;
 
-visual.object_deleted = visual.deleted = (v, result) => result.DELETE[v.pathJoin()] = v.valueBefore;
+visual.object_deleted = (v) => ({ DELETE: { [v.pathJoin()]: v.valueBefore } });
+visual.deleted = visual.object_deleted;
 
-visual.object_unchanged = visual.unchanged = (v, result) => result.UNCHANGED[v.pathJoin()] = v.valueAfter;
+visual.object_unchanged = (v) => ({ UNCHAGED: { [v.pathJoin()]: v.valueAfter } });
+visual.unchanged = visual.object_unchanged;
 
-visual.changed = visual.object_changed_1 = visual.object_changed_2 = (v, result) => {
+visual.changed = (v) => {
   const subresult = {};
   subresult.prev = v.valueBefore;
   subresult.after = v.valueAfter;
-  result.UPDATE[v.pathJoin()] = subresult;
+  return { CHANGED: { [v.pathJoin()]: subresult } };
 };
+visual.object_changed_1 = visual.changed;
+visual.object_changed_2 = visual.changed;
 
-visual.object_changed = (v, result) => _.merge(result, visual.ize(v.changedChild, true));
+visual.object_changed = (v) => visual.ize(v.changedChild, true);
 
 visual.ize = (difs, raw = false) => {
   const result = {
@@ -24,10 +31,10 @@ visual.ize = (difs, raw = false) => {
     UPDATE: {},
     DELETE: {},
   };
-  for (const [k, v] of Object.entries(difs)) {
+  values2(difs).forEach((v) => {
     if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
-    visual[v.dif](v, result);
-  }
+    _.merge(result, visual[v.dif](v));
+  });
   if (raw === true) return result;
   return JSON.stringify(result, null, '\t');
 };

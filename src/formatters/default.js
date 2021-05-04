@@ -1,5 +1,6 @@
-import _ from "lodash";
-import { typeofEx } from './../buildDif.js';
+/* eslint-disable import/extensions */
+import _ from 'lodash';
+import { typeofEx } from '../buildDif.js';
 
 // visualize default
 const visual = {};
@@ -14,18 +15,16 @@ visual.genFinish = (tabLevel) => visual.genStr(tabLevel, '}');
 // required rewrite
 JSON.stringify2 = (tabLevel, obj) => {
   let result = visual.genStart();
-  for (const [k, v] of Object.entries2(obj)) {
-    if (typeofEx(v) === 'object')
-      result += visual.genStr(tabLevel + 1, `${k}: ${JSON.stringify2(tabLevel + 1, v)}`); 
-    else 
-      result += visual.genStr(tabLevel + 1, `${k}: ${v}`);
-  }
+  Object.entries2(obj).forEach(([k, v]) => {
+    if (typeofEx(v) === 'object') result += visual.genStr(tabLevel + 1, `${k}: ${JSON.stringify2(tabLevel + 1, v)}`);
+    else { result += visual.genStr(tabLevel + 1, `${k}: ${v}`); }
+  });
   return result + visual.genFinish(tabLevel);
 };
-Object.entries2 = (obj) => {
-  return _.sortBy(Object.entries(obj),(a) => a[0]);
-}
-export const entries2 = Object.entries2;
+Object.entries2 = (obj) => _.sortBy(Object.entries(obj), (a) => a[0]);
+export const { entries2 } = Object;
+Object.values2 = (obj) => Object.entries2(obj).map(([, v]) => v);
+export const { values2 } = Object;
 
 visual.object_sign = (tabLevel, k, v, sign) => {
   const vRE = (sign === '+') ? v.valueAfter : v.valueBefore;
@@ -42,16 +41,22 @@ visual.object_unchanged = (tabLevel, k, v) => visual.genStr(tabLevel + 1, `${k}:
 visual.unchanged = (tabLevel, k, v) => visual.genStr(tabLevel, `    ${k}: ${v.valueAfter}`);
 
 visual.object_changed = (tabLevel, k, v) => visual.genStr(tabLevel + 1, `${k}: ${visual.ize(v.changedChild, tabLevel + 1)}`);
-visual.object_changed_1 = (tabLevel, k, v) => visual.object_deleted(tabLevel, k, v) + visual.created(tabLevel, k, v);
-visual.object_changed_2 = (tabLevel, k, v) => visual.deleted(tabLevel, k, v) + visual.object_created(tabLevel, k, v);
-visual.changed = (tabLevel, k, v) => visual.deleted(tabLevel, k, v) + visual.created(tabLevel, k, v);
+visual.object_changed_1 = (tabLevel, k, v) => (
+  visual.object_deleted(tabLevel, k, v) + visual.created(tabLevel, k, v)
+);
+visual.object_changed_2 = (tabLevel, k, v) => (
+  visual.deleted(tabLevel, k, v) + visual.object_created(tabLevel, k, v)
+);
+visual.changed = (tabLevel, k, v) => (
+  visual.deleted(tabLevel, k, v) + visual.created(tabLevel, k, v)
+);
 
-visual.ize = (difs, tabLevel = 0) => { 
+visual.ize = (difs, tabLevel = 0) => {
   let result = visual.genStart();
-  for (const [k, v] of Object.entries2(difs)) {
+  Object.entries2(difs).forEach(([k, v]) => {
     if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
     result += visual[v.dif](tabLevel, k, v);
-  }
+  });
   return (result + visual.genFinish(tabLevel)).trim();
 };
 

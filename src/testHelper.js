@@ -1,3 +1,4 @@
+/* eslint-disable no-undef, no-useless-return */
 import fs from 'fs';
 import dif from './index';
 // it will parse JSON into easy format
@@ -11,20 +12,15 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
     result.finish = str;
     return result;
   }
-  if (str[0] === '-') {
-    [[result.deleted]] = str;
-    str = str.slice(1).trim();
-  }
+  if (str[0] === '-') [[result.deleted]] = str;
+  if (str[0] === '+') [[result.created]] = str;
 
-  if (str[0] === '+') {
-    [[result.created]] = str;
-    str = str.slice(1).trim();
-  }
   const colon = str.search(':');
   if (colon === -1) throw new Error(': colon not found');
   result.colon = str[colon];
 
-  const key = str.slice(0, colon).trim();
+  const key = str.slice(1, colon).trim();
+  if (key.length === 0) throw new Error('key not found');
   result.key = key;
 
   result.hash = () => {
@@ -43,13 +39,13 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
   result.value = afterColon;
   return result;
 });
-// it will parse stringHase result, to even more easier format
+// it will parse stringHase result, to even easier format
 const toPaths = (stringHasReturn) => {
   const result = {};
   const path = [];
   stringHasReturn.forEach((str) => {
     if (str.finish !== undefined) path.pop();
-    else if (str.hash === undefined) return undefined;
+    else if (str.hash === undefined) return;
     else if (str.startsChildren === true) path.push(str.key);
     else {
       const basePath = path.join('.');

@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import parse from './parser.js';
 import formats from './formatters/index.js';
 import buildDif from './buildDif.js';

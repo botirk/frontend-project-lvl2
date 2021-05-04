@@ -3,12 +3,12 @@ import _ from 'lodash';
 export const typeofEx = (v) => {
   if (v === null) return 'null';
   return typeof v;
-}
+};
 
 const buildDif = (obj1, obj2, path = []) => {
   const result = {};
 
-  for (const [k, v] of Object.entries(obj1)) {
+  Object.entries(obj1).forEach((k, v) => {
     if (!_.has(obj1, k)) return;
     const subresult = {};
     subresult.path = path.slice().concat(k);
@@ -37,9 +37,9 @@ const buildDif = (obj1, obj2, path = []) => {
     }
 
     result[k] = subresult;
-  }
+  });
 
-  for (const [k, v] of Object.entries(obj2)) {
+  Object.entries(obj2).forEach((k, v) => {
     if (_.has(obj2, k) && !_.has(obj1, k)) {
       const subresult = {};
       subresult.path = path.slice().concat(k);
@@ -52,9 +52,9 @@ const buildDif = (obj1, obj2, path = []) => {
 
       result[k] = subresult;
     }
-  }
+  });
 
-  //console.log(result);
+  // console.log(result);
   return result;
 };
 
