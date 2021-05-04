@@ -51,7 +51,7 @@ visual.ize = (difs, tabLevel = 0) => {
     if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
     result += visual[v.dif](tabLevel, k, v);
   }
-  return result + visual.genFinish(tabLevel);
+  return (result + visual.genFinish(tabLevel)).trim();
 };
 
 export default visual.ize;
