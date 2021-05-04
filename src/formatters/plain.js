@@ -1,4 +1,5 @@
 import { typeofEx } from '../buildDif.js'; 
+import { entries2 } from './default';
 
 const visual = {};
 visual.genStr = (str) => {
@@ -24,11 +25,11 @@ visual.object_changed = (v) => visual.ize(v.changedChild);
 
 visual.ize = (difs) => {
   let result = '';
-  for (const [k, v] of Object.entries(difs)) {
+  for (const [k, v] of entries2(difs)) {
     if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
     result += visual.genStr(visual[v.dif](v));
   }
-  return result;
+  return result.trim();
 };
 
 export default visual.ize;
