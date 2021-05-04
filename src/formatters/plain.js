@@ -1,10 +1,12 @@
+import { typeofEx } from '../buildDif.js'; 
+
 const visual = {};
 visual.genStr = (str) => {
   if (str[str.length - 1] === '\n' || str.length === 0) return str;
   return `${str}\n`;
 };
 visual.translate = (value) => {
-  switch (typeof value) {
+  switch (typeofEx(value)) {
     case 'object':
       return '[complex value]';
     case 'string':

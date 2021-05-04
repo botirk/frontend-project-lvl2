@@ -24,6 +24,9 @@ test-run-format-json:
 
 test-run-hexlet:
 	bin/index.js __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
+
+test-run-hexlet-plain:
+	bin/index.js --format plain __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
 	
 lint:
 	npx eslint .
