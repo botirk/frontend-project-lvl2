@@ -10,14 +10,14 @@ visual.created = visual.object_created;
 visual.object_deleted = (v) => ({ DELETE: { [v.pathJoin()]: v.valueBefore } });
 visual.deleted = visual.object_deleted;
 
-visual.object_unchanged = (v) => ({ UNCHAGED: { [v.pathJoin()]: v.valueAfter } });
+visual.object_unchanged = (v) => ({ UNCHANGED: { [v.pathJoin()]: v.valueAfter } });
 visual.unchanged = visual.object_unchanged;
 
 visual.changed = (v) => {
   const subresult = {};
   subresult.prev = v.valueBefore;
   subresult.after = v.valueAfter;
-  return { CHANGED: { [v.pathJoin()]: subresult } };
+  return { UPDATE: { [v.pathJoin()]: subresult } };
 };
 visual.object_changed_1 = visual.changed;
 visual.object_changed_2 = visual.changed;
@@ -25,15 +25,10 @@ visual.object_changed_2 = visual.changed;
 visual.object_changed = (v) => visual.ize(v.changedChild, true);
 
 visual.ize = (difs, raw = false) => {
-  const result = {
-    CREATE: {},
-    UNCHANGED: {},
-    UPDATE: {},
-    DELETE: {},
-  };
+  let result = {};
   values2(difs).forEach((v) => {
     if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
-    _.merge(result, visual[v.dif](v));
+    result = _.merge(result, visual[v.dif](v));
   });
   if (raw === true) return result;
   return JSON.stringify(result, null, '\t');

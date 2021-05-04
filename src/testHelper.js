@@ -14,12 +14,13 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
   }
   if (str[0] === '-') [[result.deleted]] = str;
   if (str[0] === '+') [[result.created]] = str;
+  const plusORminus = (result.deleted || result.created) ? 1 : 0;
 
   const colon = str.search(':');
   if (colon === -1) throw new Error(': colon not found');
   result.colon = str[colon];
 
-  const key = str.slice(1, colon).trim();
+  const key = str.slice(plusORminus, colon).trim();
   if (key.length === 0) throw new Error('key not found');
   result.key = key;
 

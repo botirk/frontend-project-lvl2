@@ -8,7 +8,7 @@ export const typeofEx = (v) => {
 const buildDif = (obj1, obj2, path = []) => {
   const result = {};
 
-  Object.entries(obj1).forEach((k, v) => {
+  Object.entries(obj1).forEach(([k, v]) => {
     if (!_.has(obj1, k)) return;
     const subresult = {};
     subresult.path = path.slice().concat(k);
@@ -39,7 +39,7 @@ const buildDif = (obj1, obj2, path = []) => {
     result[k] = subresult;
   });
 
-  Object.entries(obj2).forEach((k, v) => {
+  Object.entries(obj2).forEach(([k, v]) => {
     if (_.has(obj2, k) && !_.has(obj1, k)) {
       const subresult = {};
       subresult.path = path.slice().concat(k);
@@ -54,7 +54,6 @@ const buildDif = (obj1, obj2, path = []) => {
     }
   });
 
-  // console.log(result);
   return result;
 };
 
