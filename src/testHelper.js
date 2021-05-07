@@ -1,44 +1,46 @@
 /* eslint-disable no-undef, no-useless-return */
 import fs from 'fs';
+import _ from 'lodash';
 import dif from './index';
 // it will parse JSON into easy format
 const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).filter((str) => str.length > 0).map((str) => {
-  const result = { str };
-  if (str === '{') {
-    result.start = str;
-    return result;
-  }
-  if (str === '}') {
-    result.finish = str;
-    return result;
-  }
-  if (str[0] === '-') [[result.deleted]] = str;
-  if (str[0] === '+') [[result.created]] = str;
-  const plusORminus = (result.deleted || result.created) ? 1 : 0;
+  const preresult1 = {
+    str,
+    start: (str === '{') ? '{' : undefined,
+    finish: (str === '}') ? '}' : undefined,
+  };
+  if (preresult1.start || preresult1.finish) return preresult1;
+
+  const preresult2 = {
+    deleted: (str[0] === '-') ? str : undefined,
+    created: (str[0] === '+') ? str : undefined,
+  };
+  const plusORminus = (preresult2.deleted || preresult2.created) ? 1 : 0;
 
   const colon = str.search(':');
   if (colon === -1) throw new Error(': colon not found');
-  result.colon = str[colon];
+  const preresult3 = {
+    colon: str[colon],
+    key: str.slice(plusORminus, colon).trim(),
+  };
+  if (preresult3.key.length === 0) throw new Error('key not found');
 
-  const key = str.slice(plusORminus, colon).trim();
-  if (key.length === 0) throw new Error('key not found');
-  result.key = key;
-
-  result.hash = () => {
-    let subresult = '';
-    subresult += result.deleted ?? '';
-    subresult += result.created ?? '';
-    subresult += result.key ?? '';
-    return subresult;
+  const preresult4 = {
+    hash: () => (preresult2.deleted ?? '')
+      + (preresult2.created ?? '')
+      + preresult3.key,
+    afterColon: str.slice(colon + 1).trim(),
   };
 
-  const afterColon = str.slice(colon + 1).trim();
-  if (afterColon === '{') {
-    result.startsChildren = true;
-    return result;
-  }
-  result.value = afterColon;
-  return result;
+  const startsChildren = (preresult4.afterColon === '}');
+  const preresult5 = {
+    startsChildren,
+    value: (startsChildren === true) ? undefined : preresult4.afterColon,
+  };
+  return _.merge(preresult1,
+    _.merge(preresult2,
+      _.merge(preresult3,
+        _.merge(preresult4, preresult5))));
 });
 // it will parse stringHase result, to even easier format
 const toPaths = (stringHasReturn) => {
