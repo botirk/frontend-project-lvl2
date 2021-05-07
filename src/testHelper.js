@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, no-useless-return */
+/* eslint-disable jest/no-export, jest/valid-title */
 import fs from 'fs';
 import _ from 'lodash';
 import dif from './index';
@@ -44,19 +44,23 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
 });
 // it will parse stringHase result, to even easier format
 const toPaths = (stringHasReturn) => {
-  const result = {};
-  const path = [];
-  stringHasReturn.forEach((str) => {
-    if (str.finish !== undefined) path.pop();
-    else if (str.hash === undefined) return;
-    else if (str.startsChildren === true) path.push(str.key);
-    else {
-      const basePath = path.join('.');
-      if (basePath.length > 0) result[`${basePath}.${str.hash()}`] = str.value;
-      else result[str.hash()] = str.value;
+  const result = stringHasReturn.reduce((acc, str) => {
+    if (str.finish !== undefined) {
+      return { result: acc.result, path: acc.path.slice(0, -1) };
     }
-  });
-  return result;
+    if (str.hash === undefined) {
+      return acc;
+    }
+    if (str.startsChildren === true) {
+      return { result: acc.result, path: acc.path.concat(str.key) };
+    }
+    const basePath = acc.path.join('.');
+    if (basePath.length > 0) {
+      const newKey = `${basePath}.${str.hash()}`;
+      return { result: { ...acc.result, [newKey]: str.value }, path: acc.path };
+    } return { result: { ...acc.result, [str.hash()]: str.value }, path: acc.path };
+  }, { result: {}, path: [] });
+  return result.result;
 };
 // DRY
 export const testMe = (name, beforeFile, afterFile, expectedFile) => {
