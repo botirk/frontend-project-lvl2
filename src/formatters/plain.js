@@ -1,13 +1,12 @@
-/* eslint-disable import/extensions */
+/* eslint-disable import/extensions, camelcase, no-use-before-define */
 import { typeofEx } from '../buildDif.js';
 import { values2 } from './default.js';
 
-const visual = {};
-visual.genStr = (str) => {
+const genStr = (str) => {
   if (str[str.length - 1] === '\n' || str.length === 0) return str;
   return `${str}\n`;
 };
-visual.translate = (value) => {
+const translate = (value) => {
   switch (typeofEx(value)) {
     case 'object':
       return '[complex value]';
@@ -18,27 +17,36 @@ visual.translate = (value) => {
   }
 };
 
-visual.object_created = (v) => `Property '${v.pathJoin()}' was added with value: ${visual.translate(v.valueAfter)}`;
-visual.created = visual.object_created;
+const object_created = (v) => `Property '${v.pathJoin()}' was added with value: ${translate(v.valueAfter)}`;
+const created = object_created;
 
-visual.object_deleted = (v) => `Property '${v.pathJoin()}' was removed`;
-visual.deleted = visual.object_deleted;
+const object_deleted = (v) => `Property '${v.pathJoin()}' was removed`;
+const deleted = object_deleted;
 
-visual.object_unchanged = () => '';
-visual.unchanged = visual.object_unchanged;
+const object_unchanged = () => '';
+const unchanged = object_unchanged;
 
-visual.changed = (v) => `Property '${v.pathJoin()}' was updated. From ${visual.translate(v.valueBefore)} to ${visual.translate(v.valueAfter)}`;
-visual.object_changed_1 = visual.changed;
-visual.object_changed_2 = visual.changed;
-visual.object_changed = (v) => visual.ize(v.changedChild);
+const changed = (v) => `Property '${v.pathJoin()}' was updated. From ${translate(v.valueBefore)} to ${translate(v.valueAfter)}`;
+const object_changed_1 = changed;
+const object_changed_2 = changed;
+const object_changed = (v) => visualize(v.changedChild);
 
-visual.ize = (difs) => {
-  let result = '';
-  values2(difs).forEach((v) => {
-    if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
-    result += visual.genStr(visual[v.dif](v));
-  });
-  return result.trim();
+const visual = {
+  object_created,
+  created,
+  object_deleted,
+  deleted,
+  object_unchanged,
+  unchanged,
+  changed,
+  object_changed_1,
+  object_changed_2,
+  object_changed,
 };
 
-export default visual.ize;
+const visualize = (difs) => values2(difs).reduce((acc, v) => {
+  if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
+  return acc + genStr(visual[v.dif](v));
+}, '').trim();
+
+export default visualize;
