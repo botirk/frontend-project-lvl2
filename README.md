@@ -1,3 +1,15 @@
+```
+bin/index.js __fixtures__/dif_before.json __fixtures__/dif_after.json
+{
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}
+```
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/botirk/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/botirk/frontend-project-lvl2/actions)
 ### Codeclimate code quality:
