@@ -61,8 +61,8 @@ const visualize = (difs, tabLevel = 0) => {
   const result = genStart() + entries2(difs).reduce((acc, [k, v]) => {
     if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
     return acc + visual[v.dif](tabLevel, k, v);
-  }, '') + genFinish(tabLevel).trim();
-  return result;
+  }, '') + genFinish(tabLevel);
+  return result.trim();
 };
 
 export default visualize;
