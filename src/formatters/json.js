@@ -11,12 +11,14 @@ const deleted = object_deleted;
 const object_unchanged = (v) => ({ UNCHANGED: { [v.pathJoin()]: v.valueAfter } });
 const unchanged = object_unchanged;
 
-const changed = (v) => {
-  const subresult = {};
-  subresult.prev = v.valueBefore;
-  subresult.after = v.valueAfter;
-  return { UPDATE: { [v.pathJoin()]: subresult } };
-};
+const changed = (v) => ({
+  UPDATE: {
+    [v.pathJoin()]: {
+      prev: v.valueBefore,
+      after: v.valueAfter,
+    },
+  },
+});
 const object_changed_1 = changed;
 const object_changed_2 = changed;
 
