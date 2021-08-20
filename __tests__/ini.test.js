@@ -1,4 +1,4 @@
-import { testMe, testMePlain, testMeJSON } from '../src/testHelper';
+import { testMe, testMePlain, testMeJSON } from './testHelper';
 
 const relPath1i = '__fixtures__/dif_before.ini';
 const relPath2i = '__fixtures__/dif_after.ini';

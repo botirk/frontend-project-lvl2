@@ -1,4 +1,4 @@
-import { testMe, testMePlain } from '../src/testHelper';
+import { testMe, testMePlain } from './testHelper';
 
 const relPath1 = '__fixtures__/hexlet/file1.json';
 const relPath2 = '__fixtures__/hexlet/file2.json';

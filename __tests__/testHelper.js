@@ -1,7 +1,8 @@
 /* eslint-disable jest/no-export, jest/valid-title */
 import fs from 'fs';
 import _ from 'lodash';
-import dif from './index';
+import dif from '../src/index';
+
 // it will parse JSON into easy format
 const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).filter((str) => str.length > 0).map((str) => {
   const preresult1 = {
@@ -42,6 +43,7 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
       _.merge(preresult3,
         _.merge(preresult4, preresult5))));
 });
+
 // it will parse stringHase result, to even easier format
 const toPaths = (stringHasReturn) => {
   const result = stringHasReturn.reduce((acc, str) => {
@@ -62,6 +64,7 @@ const toPaths = (stringHasReturn) => {
   }, { result: {}, path: [] });
   return result.result;
 };
+
 // DRY
 export const testMe = (name, beforeFile, afterFile, expectedFile) => {
   test(name, () => {

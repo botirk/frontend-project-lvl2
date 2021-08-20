@@ -1,4 +1,4 @@
-import { testMe, testMePlain, testMeJSON } from '../src/testHelper';
+import { testMe, testMePlain, testMeJSON } from './testHelper';
 
 const relPath1y = '__fixtures__/dif_before.yaml';
 const relPath2y = '__fixtures__/dif_after.yaml';

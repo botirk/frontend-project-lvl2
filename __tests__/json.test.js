@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { testMe, testMePlain, testMeJSON } from '../src/testHelper';
+import { testMe, testMePlain, testMeJSON } from './testHelper';
 
 const relPath1 = '__fixtures__/dif_before.json';
 const relPath2 = '__fixtures__/dif_after.json';

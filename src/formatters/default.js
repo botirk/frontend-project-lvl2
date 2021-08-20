@@ -9,8 +9,11 @@ const genStr = (tabLevel, str) => {
   if (result[result.length - 1] === '\n') return result;
   return `${result}\n`;
 };
+
 const genStart = (tabLevel = 0) => genStr(tabLevel, '{');
+
 const genFinish = (tabLevel) => genStr(tabLevel, '}');
+
 // required rewrite
 const stringify2 = (tabLevel, obj) => genStart() + entries2(obj).reduce((acc, [k, v]) => {
   if (typeofEx(v) === 'object') return acc + genStr(tabLevel + 1, `${k}: ${stringify2(tabLevel + 1, v)}`);
