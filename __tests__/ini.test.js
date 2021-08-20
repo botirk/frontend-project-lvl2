@@ -1,17 +1,11 @@
 import { testMe, testMePlain, testMeJSON } from './testHelper';
+import { difBeforeINI, difAfterINI, difOutput } from './paths';
+import { difBeforeNestedINI, difAfterNestedINI, difOutputNested, difOutputPlain, difOutputJSON } from './paths';
 
-const relPath1i = '__fixtures__/dif_before.ini';
-const relPath2i = '__fixtures__/dif_after.ini';
-const relPathResulti = '__fixtures__/dif_output';
-testMe('plain .ini', relPath1i, relPath2i, relPathResulti);
+testMe('plain .ini', difBeforeINI, difAfterINI, difOutput);
 
-const relPath1ni = '__fixtures__/nested_dif_before.ini';
-const relPath2ni = '__fixtures__/nested_dif_after.ini';
-const relPathResultni = '__fixtures__/nested_dif_output';
-testMe('nested .ini', relPath1ni, relPath2ni, relPathResultni);
+testMe('nested .ini', difBeforeNestedINI, difAfterNestedINI, difOutputNested);
 
-const relPathResultp = '__fixtures__/plain_output';
-testMePlain('(--format plain) .ini', relPath1ni, relPath2ni, relPathResultp);
+testMePlain('(--format plain) .ini', difBeforeNestedINI, difAfterNestedINI, difOutputPlain);
 
-const relPathResultj = '__fixtures__/json_output.json';
-testMeJSON('(--format json) .ini', relPath1ni, relPath2ni, relPathResultj);
+testMeJSON('(--format json) .ini', difBeforeNestedINI, difAfterNestedINI, difOutputJSON);

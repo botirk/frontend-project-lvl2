@@ -1,23 +1,14 @@
 import { resolve } from 'path';
 import { testMe, testMePlain, testMeJSON } from './testHelper';
+import { difBeforeJSON, difAfterJSON, difOutput } from './paths';
+import { difBeforeNestedJSON, difAfterNestedJSON, difOutputNested, difOutputPlain, difOutputJSON } from './paths';
 
-const relPath1 = '__fixtures__/dif_before.json';
-const relPath2 = '__fixtures__/dif_after.json';
-const relPathResult = '__fixtures__/dif_output';
-testMe('plain .json', relPath1, relPath2, relPathResult);
+testMe('plain .json', difBeforeJSON, difAfterJSON, difOutput);
 
-const absPath1 = resolve(relPath1);
-const absPath2 = resolve(relPath2);
-const absPathResult = resolve(relPathResult);
-testMe('abs path', absPath1, absPath2, absPathResult);
+testMe('abs path plain .json', resolve(difBeforeJSON), resolve(difAfterJSON), resolve(difOutput));
 
-const relPath1n = '__fixtures__/nested_dif_before.json';
-const relPath2n = '__fixtures__/nested_dif_after.json';
-const relPathResultn = '__fixtures__/nested_dif_output';
-testMe('nested .json', relPath1n, relPath2n, relPathResultn);
+testMe('nested .json', difBeforeNestedJSON, difAfterNestedJSON, difOutputNested);
 
-const relPathResultp = '__fixtures__/plain_output';
-testMePlain('(--format plain) .json', relPath1n, relPath2n, relPathResultp);
+testMePlain('(--format plain) .json', difBeforeNestedJSON, difAfterNestedJSON, difOutputPlain);
 
-const relPathResultj = '__fixtures__/json_output.json';
-testMeJSON('(--format json) .json', relPath1n, relPath2n, relPathResultj);
+testMeJSON('(--format json) .json', difBeforeNestedJSON, difAfterNestedJSON, difOutputJSON);

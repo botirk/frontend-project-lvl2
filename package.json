@@ -4,7 +4,7 @@
   "description": "compare two configs (.json & .yml)",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --testPathIgnorePatterns=testHelper.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -38,5 +38,11 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.3.6"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".*(?<!.test.js)$"
+    ]
   }
 }
