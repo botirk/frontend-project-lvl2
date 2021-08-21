@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions, camelcase, no-use-before-define */
 import { typeofEx } from '../buildDif.js';
-import { values2 } from './default.js';
+import { valuesSorted } from './default.js';
 
 const genStr = (str) => {
   if (str[str.length - 1] === '\n' || str.length === 0) return str;
@@ -44,7 +44,7 @@ const visual = {
   object_changed,
 };
 
-const visualize = (difs) => values2(difs).reduce((acc, v) => {
+const visualize = (difs) => valuesSorted(difs).reduce((acc, v) => {
   if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
   return acc + genStr(visual[v.dif](v));
 }, '').trim();

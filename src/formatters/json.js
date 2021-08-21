@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions, camelcase, no-use-before-define */
 import _ from 'lodash';
-import { values2 } from './default.js';
+import { valuesSorted } from './default.js';
 
 const object_created = (v) => ({ CREATE: { [v.pathJoin()]: v.valueAfter } });
 const created = object_created;
@@ -38,7 +38,7 @@ const visual = {
 };
 
 const visualize = (difs, raw = false) => {
-  const result = values2(difs).reduce((acc, v) => {
+  const result = valuesSorted(difs).reduce((acc, v) => {
     if (visual[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
     return _.merge(acc, visual[v.dif](v));
   }, {});

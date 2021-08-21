@@ -4,32 +4,35 @@ install:
 run:
 	bin/index.js -h
 
-test-run-json:
+run-json:
 	bin/index.js __fixtures__/dif_before.json __fixtures__/dif_after.json
 
-test-run-yaml:
+run-yaml:
 	bin/index.js __fixtures__/dif_before.yaml __fixtures__/dif_after.yaml
 
-test-run-ini:
+run-ini:
 	bin/index.js __fixtures__/dif_before.ini __fixtures__/dif_after.ini
 
-test-run-nested-json:
+run-nested-json:
 	bin/index.js __fixtures__/nested_dif_before.json __fixtures__/nested_dif_after.json
 
-test-run-plain:
+run-plain:
 	bin/index.js --format plain __fixtures__/nested_dif_before.json __fixtures__/nested_dif_after.json
 
-test-run-format-json:
+run-format-json:
 	bin/index.js --format json __fixtures__/nested_dif_before.json __fixtures__/nested_dif_after.json
 
-test-run-hexlet:
+run-hexlet:
 	bin/index.js __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
 
-test-run-hexlet-plain:
+run-hexlet-plain:
 	bin/index.js --format plain __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
 	
 lint:
 	npx eslint .
+
+lint+fix:
+	npx eslint . --fix
 
 test:
 	npm test

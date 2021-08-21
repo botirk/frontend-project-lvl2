@@ -1,7 +1,10 @@
 import { resolve } from 'path';
 import { testMe, testMePlain, testMeJSON } from './testHelper';
-import { difBeforeJSON, difAfterJSON, difOutput } from './paths';
-import { difBeforeNestedJSON, difAfterNestedJSON, difOutputNested, difOutputPlain, difOutputJSON } from './paths';
+import {
+  difBeforeJSON, difAfterJSON, difOutput,
+  difBeforeNestedJSON, difAfterNestedJSON,
+  difOutputNested, difOutputPlain, difOutputJSON,
+} from './paths';
 
 testMe('plain .json', difBeforeJSON, difAfterJSON, difOutput);
 

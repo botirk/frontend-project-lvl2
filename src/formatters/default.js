@@ -2,70 +2,75 @@
 import _ from 'lodash';
 import { typeofEx } from '../buildDif.js';
 
-// visualize default
 const tab = ' ';
-const genStr = (tabLevel, str) => {
-  const result = tab.repeat(tabLevel * 4) + str;
-  if (result[result.length - 1] === '\n') return result;
-  return `${result}\n`;
+const tabs = (tabLevel) => tab.repeat(tabLevel * 4);
+
+const endStr = (str) => {
+  if (str[str.length - 1] === '\n') return str;
+  return `${str}\n`;
 };
 
-const genStart = (tabLevel = 0) => genStr(tabLevel, '{');
+export const entriesSorted = (obj) => _.sortBy(Object.entries(obj), (a) => a[0]);
 
-const genFinish = (tabLevel) => genStr(tabLevel, '}');
+export const valuesSorted = (obj) => entriesSorted(obj).map(([, v]) => v);
 
-// required rewrite
-const stringify2 = (tabLevel, obj) => genStart() + entries2(obj).reduce((acc, [k, v]) => {
-  if (typeofEx(v) === 'object') return acc + genStr(tabLevel + 1, `${k}: ${stringify2(tabLevel + 1, v)}`);
-  return acc + genStr(tabLevel + 1, `${k}: ${v}`);
-}, '') + genFinish(tabLevel);
-export const entries2 = (obj) => _.sortBy(Object.entries(obj), (a) => a[0]);
-export const values2 = (obj) => entries2(obj).map(([, v]) => v);
+// content inside of object
+const stringify = (tabLevel, obj) => entriesSorted(obj).reduce((acc, [k, v]) => {
+  if (typeofEx(v) === 'object') return acc + tabs(tabLevel + 1) + endStr(`${k}: ${stringifyBraced(tabLevel + 1, v)}`);
+  return acc + tabs(tabLevel + 1) + endStr(`${k}: ${v}`);
+}, '');
 
-const object_sign = (tabLevel, k, v, sign) => {
+// content of object
+const stringifyBraced = (tabLevel, obj) => `{\n${stringify(tabLevel, obj)}${tabs(tabLevel)}}`;
+
+const object_withSign = (tabLevel, k, v, sign) => {
   const vRE = (sign === '+') ? v.valueAfter : v.valueBefore;
-  return genStr(tabLevel, `  ${sign} ${k}: ${stringify2(tabLevel + 1, vRE)}`);
+  return tabs(tabLevel + 0.5) + endStr(`${sign} ${k}: ${stringifyBraced(tabLevel + 1, vRE)}`);
 };
-
-const object_created = (tabLevel, k, v) => object_sign(tabLevel, k, v, '+');
-const created = (tabLevel, k, v) => genStr(tabLevel, `  + ${k}: ${v.valueAfter}`);
-
-const object_deleted = (tabLevel, k, v) => object_sign(tabLevel, k, v, '-');
-const deleted = (tabLevel, k, v) => genStr(tabLevel, `  - ${k}: ${v.valueBefore}`);
-
-const object_unchanged = (tabLevel, k, v) => genStr(tabLevel + 1, `${k}: ${stringify2(tabLevel + 1, v.valueAfter)}`);
-const unchanged = (tabLevel, k, v) => genStr(tabLevel, `    ${k}: ${v.valueAfter}`);
-
-const object_changed = (tabLevel, k, v) => genStr(tabLevel + 1, `${k}: ${visualize(v.changedChild, tabLevel + 1)}`);
-const object_changed_1 = (tabLevel, k, v) => (
-  object_deleted(tabLevel, k, v) + created(tabLevel, k, v)
-);
-const object_changed_2 = (tabLevel, k, v) => (
-  deleted(tabLevel, k, v) + object_created(tabLevel, k, v)
-);
-const changed = (tabLevel, k, v) => (
-  deleted(tabLevel, k, v) + created(tabLevel, k, v)
-);
 
 const visual = {
-  object_created,
-  created,
-  object_deleted,
-  deleted,
-  object_unchanged,
-  unchanged,
-  changed,
-  object_changed_1,
-  object_changed_2,
-  object_changed,
+  object_created: (tabLevel, k, v) => (
+    object_withSign(tabLevel, k, v, '+')
+  ),
+  created: (tabLevel, k, v) => (
+    tabs(tabLevel) + endStr(`  + ${k}: ${v.valueAfter}`)
+  ),
+  object_deleted: (tabLevel, k, v) => (
+    object_withSign(tabLevel, k, v, '-')
+  ),
+  deleted: (tabLevel, k, v) => (
+    tabs(tabLevel + 0.5) + endStr(`- ${k}: ${v.valueBefore}`)
+  ),
+  object_unchanged: (tabLevel, k, v) => (
+    tabs(tabLevel + 1) + endStr(`${k}: ${stringifyBraced(tabLevel + 1, v.valueAfter)}`)
+  ),
+  unchanged: (tabLevel, k, v) => (
+    tabs(tabLevel + 1) + endStr(`${k}: ${v.valueAfter}`)
+  ),
+  changed: (tabLevel, k, v) => (
+    visual.deleted(tabLevel, k, v) + visual.created(tabLevel, k, v)
+  ),
+  object_changed_1: (tabLevel, k, v) => (
+    visual.object_deleted(tabLevel, k, v) + visual.created(tabLevel, k, v)
+  ),
+  object_changed_2: (tabLevel, k, v) => (
+    visual.deleted(tabLevel, k, v) + visual.object_created(tabLevel, k, v)
+  ),
+  object_changed: (tabLevel, k, v) => (
+    tabs(tabLevel + 1) + endStr(`${k}: ${visualizeBraced(v.changedChild, tabLevel + 1)}`)
+  ),
 };
 
-const visualize = (difs, tabLevel = 0) => {
-  const result = genStart() + entries2(difs).reduce((acc, [k, v]) => {
-    if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
-    return acc + visual[v.dif](tabLevel, k, v);
-  }, '') + genFinish(tabLevel);
+// content inside of object
+const visualize = (difs, tabLevel) => entriesSorted(difs).reduce((acc, [k, v]) => {
+  if (visual[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
+  return acc + visual[v.dif](tabLevel, k, v);
+}, '');
+
+// content of object
+const visualizeBraced = (difs, tabLevel = 0) => {
+  const result = `{\n${visualize(difs, tabLevel)}${tabs(tabLevel)}}`;
   return result.trim();
 };
 
-export default visualize;
+export default visualizeBraced;

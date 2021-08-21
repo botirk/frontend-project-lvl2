@@ -1,6 +1,9 @@
 import { testMe, testMePlain, testMeJSON } from './testHelper';
-import { difBeforeINI, difAfterINI, difOutput } from './paths';
-import { difBeforeNestedINI, difAfterNestedINI, difOutputNested, difOutputPlain, difOutputJSON } from './paths';
+import {
+  difBeforeINI, difAfterINI, difOutput,
+  difBeforeNestedINI, difAfterNestedINI,
+  difOutputNested, difOutputPlain, difOutputJSON,
+} from './paths';
 
 testMe('plain .ini', difBeforeINI, difAfterINI, difOutput);
 
