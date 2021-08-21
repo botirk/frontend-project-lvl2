@@ -4,7 +4,7 @@ import {
   difBeforeJSON, difAfterJSON, difOutput,
   difBeforeNestedJSON, difAfterNestedJSON,
   difOutputNested, difOutputPlain, difOutputJSON,
-} from './paths.js';
+} from './paths';
 
 testMe('plain .json', difBeforeJSON, difAfterJSON, difOutput);
 

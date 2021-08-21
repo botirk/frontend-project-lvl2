@@ -3,7 +3,7 @@ import {
   difBeforeYAML, difAfterYAML, difOutput,
   difBeforeNestedYAML, difAfterNestedYAML,
   difOutputNested, difOutputPlain, difOutputJSON,
-} from './paths.js';
+} from './paths';
 
 testMe('plain .yaml', difBeforeYAML, difAfterYAML, difOutput);
 

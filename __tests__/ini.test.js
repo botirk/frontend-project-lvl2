@@ -3,7 +3,7 @@ import {
   difBeforeINI, difAfterINI, difOutput,
   difBeforeNestedINI, difAfterNestedINI,
   difOutputNested, difOutputPlain, difOutputJSON,
-} from './paths.js';
+} from './paths';
 
 testMe('plain .ini', difBeforeINI, difAfterINI, difOutput);
 
