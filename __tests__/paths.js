@@ -1,7 +1,7 @@
-export const difOutput = '__fixtures__/dif_output.txt';
-export const difOutputNested = '__fixtures__/nested_dif_output.txt';
-export const difOutputPlain = '__fixtures__/plain_output.txt';
-export const difOutputJSON = '__fixtures__/json_output.json';
+export const difOutput = '__fixtures__/output/dif.txt';
+export const difOutputNested = '__fixtures__/output/nested_dif.txt';
+export const difOutputPlain = '__fixtures__/output/plain.txt';
+export const difOutputJSON = '__fixtures__/output/json.json';
 
 export const difBeforeJSON = '__fixtures__/json/dif_before.json';
 export const difAfterJSON = '__fixtures__/json/dif_after.json';
