@@ -41,6 +41,7 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
+      ".git",
       "/node_modules/",
       ".*(?<!.test.js)$"
     ]

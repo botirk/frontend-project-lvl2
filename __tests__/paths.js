@@ -2,6 +2,8 @@ export const difOutput = '__fixtures__/output/dif.txt';
 export const difOutputNested = '__fixtures__/output/nested_dif.txt';
 export const difOutputPlain = '__fixtures__/output/plain.txt';
 export const difOutputJSON = '__fixtures__/output/json.json';
+export const hexletOutput = '__fixtures__/hexlet/result_stylish.txt';
+export const hexletOutputPlain = '__fixtures__/hexlet/result_plain.txt';
 
 export const difBeforeJSON = '__fixtures__/json/dif_before.json';
 export const difAfterJSON = '__fixtures__/json/dif_after.json';
@@ -16,3 +18,7 @@ export const difBeforeNestedINI = '__fixtures__/ini/nested_dif_before.ini';
 export const difAfterNestedINI = '__fixtures__/ini/nested_dif_after.ini';
 export const difBeforeNestedYAML = '__fixtures__/yaml/nested_dif_before.yaml';
 export const difAfterNestedYAML = '__fixtures__/yaml/nested_dif_after.yaml';
+export const hexletBeforeJSON = '__fixtures__/hexlet/file1.json';
+export const hexletAfterJSON = '__fixtures__/hexlet/file2.json';
+export const hexletBeforeYAML = '__fixtures__/hexlet/file1.yml';
+export const hexletAfterYAML = '__fixtures__/hexlet/file2.yml';
