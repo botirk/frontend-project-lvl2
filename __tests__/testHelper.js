@@ -10,8 +10,8 @@ const filterStrings = (strs) => strs.filter((str) => str.length > 0);
 const strToArray = (str) => filterStrings(trimStrings(splitStr(str)));
 
 const parseBraces = (preresult) => _.merge(preresult, {
-  start: (preresult.str === '{') ? true : false,
-  finish: (preresult.str === '}') ? true : false,
+  start: (preresult.str === '{'),
+  finish: (preresult.str === '}'),
 });
 
 const parseSign = (preresult) => {
@@ -21,7 +21,9 @@ const parseSign = (preresult) => {
   const sign = (deletedORcreated) ? preresult.str[0] : '';
   const str = (deletedORcreated) ? preresult.str.substring(1).trim() : preresult.str;
 
-  return _.merge(preresult, { deleted, created, deletedORcreated, sign, str });
+  return _.merge(preresult, {
+    deleted, created, deletedORcreated, sign, str,
+  });
 };
 
 const parseColon = (preresult) => {
@@ -30,15 +32,17 @@ const parseColon = (preresult) => {
 
   const key = preresult.str.slice(0, colonPos).trim();
   if (key.length === 0) throw new Error('key not found');
-  
+
   const value = preresult.str.slice(colonPos + 1).trim();
 
   const children = (value === '{');
 
   const hash = preresult.sign + key;
 
-  return _.merge(preresult, { key, value, children, hash });
-}
+  return _.merge(preresult, {
+    key, value, children, hash,
+  });
+};
 
 // it will parse default programm answer (required for testing)
 const parseString = (text) => strToArray(text).map((str) => {
@@ -48,10 +52,10 @@ const parseString = (text) => strToArray(text).map((str) => {
 
   // scan for plus or minus at start
   const sign = parseSign(braces);
-  
+
   // scan for key, value, children and hash
   const colon = parseColon(sign);
-  
+
   return colon;
 });
 
@@ -60,8 +64,7 @@ const generatePaths = (parsedStrings) => parsedStrings.reduce((acc, parsedString
   // object started > ignore
   if (parsedString.start) return acc;
   // object finished > remove last path variable from array
-  if (parsedString.finish)
-    return { result: acc.result, path: acc.path.slice(0, -1) };
+  if (parsedString.finish) return { result: acc.result, path: acc.path.slice(0, -1) };
 
   // inside of braces, add value to result
   const resultKey = `${parsedString.sign}${acc.path.concat(parsedString.key).join('.')}`;
@@ -69,14 +72,13 @@ const generatePaths = (parsedStrings) => parsedStrings.reduce((acc, parsedString
   const resultPath = (parsedString.children) ? acc.path.concat(parsedString.key) : acc.path;
 
   return { result: { ...acc.result, [resultKey]: resultValue }, path: resultPath };
-}, { result: {}, path: [] }).result
+}, { result: {}, path: [] }).result;
 
 // DRY
 export const testMe = (name, beforeFile, afterFile, expectedFile) => {
   test(name, () => {
     const result = dif(beforeFile, afterFile);
     const transformedResult = generatePaths(parseString(result));
-    console.log(generatePaths(parseString(result)))
 
     const expected = fs.readFileSync(expectedFile, 'utf-8');
     const transformedExpected = generatePaths(parseString(expected));
