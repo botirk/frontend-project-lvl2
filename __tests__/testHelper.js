@@ -60,7 +60,7 @@ const parseString = (text) => strToArray(text).map((str) => {
 });
 
 // it will generate paths from parsedStrings, required to compare results
-const generatePaths = (parsedStrings) => parsedStrings.reduce((acc, parsedString) => {
+const generatePath = (acc, parsedString) => {
   // object started > ignore
   if (parsedString.start) return acc;
   // object finished > remove last path variable from array
@@ -72,7 +72,11 @@ const generatePaths = (parsedStrings) => parsedStrings.reduce((acc, parsedString
   const resultPath = (parsedString.children) ? acc.path.concat(parsedString.key) : acc.path;
 
   return { result: { ...acc.result, [resultKey]: resultValue }, path: resultPath };
-}, { result: {}, path: [] }).result;
+}
+
+const generatePaths = (parsedStrings) => (
+  parsedStrings.reduce(generatePath, { result: {}, path: [] }).result
+);
 
 // DRY
 export const testMe = (name, beforeFile, afterFile, expectedFile) => {
