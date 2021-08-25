@@ -3,8 +3,13 @@ import fs from 'fs';
 import _ from 'lodash';
 import dif from '../src/index';
 
+const splitStr = (str) => str.split(/[\r\n]/);
+const trimStrings = (strs) => strs.map((str) => str.trim());
+const filterStrings = (strs) => strs.filter((str) => str.length > 0);
+const strToArray = (str) => filterStrings(trimStrings(splitStr(str)));
+
 // it will parse JSON into easy format
-const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).filter((str) => str.length > 0).map((str) => {
+const stringHas = (text) => strToArray(text).map((str) => {
   const preresult1 = {
     str,
     start: (str === '{') ? '{' : undefined,
@@ -44,23 +49,28 @@ const stringHas = (strings) => strings.split(/\r?\n/).map((str) => str.trim()).f
         _.merge(preresult4, preresult5))));
 });
 
-// it will parse stringHase result, to even easier format
+// it will parse stringHas result, to even easier format
 const toPaths = (stringHasReturn) => {
   const result = stringHasReturn.reduce((acc, str) => {
     if (str.finish !== undefined) {
       return { result: acc.result, path: acc.path.slice(0, -1) };
     }
+
     if (str.hash === undefined) {
       return acc;
     }
+
     if (str.startsChildren === true) {
       return { result: acc.result, path: acc.path.concat(str.key) };
     }
+
     const basePath = acc.path.join('.');
     if (basePath.length > 0) {
       const newKey = `${basePath}.${str.hash()}`;
       return { result: { ...acc.result, [newKey]: str.value }, path: acc.path };
-    } return { result: { ...acc.result, [str.hash()]: str.value }, path: acc.path };
+    } 
+    
+    return { result: { ...acc.result, [str.hash()]: str.value }, path: acc.path };
   }, { result: {}, path: [] });
   return result.result;
 };
@@ -78,15 +88,13 @@ export const testMe = (name, beforeFile, afterFile, expectedFile) => {
   });
 };
 
-const normalize = (result) => result.split(/\r?\n/).map((str) => str.trim()).filter((str) => str.length > 0);
-
 export const testMePlain = (name, beforeFile, afterFile, expectedFile) => {
   test(name, () => {
     const result = dif(beforeFile, afterFile, 'plain');
-    const transformedResult = normalize(result);
+    const transformedResult = strToArray(result);
 
     const expected = fs.readFileSync(expectedFile, 'utf-8');
-    const transformedExpected = normalize(expected);
+    const transformedExpected = strToArray(expected);
 
     transformedExpected.forEach((line) => expect(transformedResult).toContain(line));
   });
