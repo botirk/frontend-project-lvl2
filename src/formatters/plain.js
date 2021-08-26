@@ -1,6 +1,6 @@
-/* eslint-disable import/extensions, camelcase, no-use-before-define */
-import { typeofEx } from '../buildDif.js';
-import { valuesSorted, endStr } from './default.js';
+/* eslint-disable no-use-before-define */
+import { typeofEx } from '../buildDif';
+import { valuesSorted, endStr } from './default';
 
 const translate = (value) => {
   switch (typeofEx(value)) {
@@ -25,8 +25,8 @@ const dispatcher = {
   object_unchanged: () => '',
   unchanged: () => '',
   changed: (dif) => (
-    `Property '${dif.pathJoined}' was updated. ` +
-    `From ${translate(dif.valueBefore)} to ${translate(dif.valueAfter)}`
+    `Property '${dif.pathJoined}' was updated. `
+    + `From ${translate(dif.valueBefore)} to ${translate(dif.valueAfter)}`
   ),
   object_changed_1: (dif) => dispatcher.changed(dif),
   object_changed_2: (dif) => dispatcher.changed(dif),

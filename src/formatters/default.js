@@ -63,8 +63,7 @@ const dispatcher = {
 // content inside of object
 const dispathcerizeInner = (difs, tabLevel) => entriesSorted(difs).reduce((acc, [k, v]) => {
   // buildDif returned new dif, not included inside of dispatcher
-  if (dispatcher[v.dif] === undefined)
-    throw new Error(`buildDif().dif: '${v.dif}' is not supported`);
+  if (dispatcher[v.dif] === undefined) throw new Error(`buildDif().dif: '${v.dif}' is not supported`);
   // string by string add differences
   return acc + dispatcher[v.dif](tabLevel, k, v);
 }, '');

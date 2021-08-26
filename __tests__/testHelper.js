@@ -72,7 +72,7 @@ const generatePath = (acc, parsedString) => {
   const resultPath = (parsedString.children) ? acc.path.concat(parsedString.key) : acc.path;
 
   return { result: { ...acc.result, [resultKey]: resultValue }, path: resultPath };
-}
+};
 
 const generatePaths = (parsedStrings) => (
   parsedStrings.reduce(generatePath, { result: {}, path: [] }).result

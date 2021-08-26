@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import _ from 'lodash';
 
 export const typeofEx = (v) => {
@@ -6,7 +7,7 @@ export const typeofEx = (v) => {
 };
 
 const cathegorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
-  if (typeBefore === 'undefined' && subresult.typeAfter !== 'undefined') {
+  if (typeBefore === 'undefined' && typeAfter !== 'undefined') {
     if (typeAfter === 'object') { return 'object_created'; }
     return 'created';
   } if (typeBefore !== 'undefined' && typeAfter === 'undefined') {
@@ -39,26 +40,38 @@ const buildDifObj1 = (obj2, globalPath) => (acc, [k, v]) => {
   const childDif = (dif === 'object_changed')
     ? buildDif(valueBefore, valueAfter, path) : undefined;
 
-  return { ...acc, [k]: {
-    valueBefore, valueAfter,
-    typeBefore, typeAfter,
-    path, pathJoined,
-    dif, childDif,
-  }};
-}
+  return {
+    ...acc,
+    [k]: {
+      valueBefore,
+      valueAfter,
+      typeBefore,
+      typeAfter,
+      path,
+      pathJoined,
+      dif,
+      childDif,
+    },
+  };
+};
 
 const buildDifObj2 = (obj1, globalPath) => (acc, [k, v]) => {
   // key exists in obj1 = there is no reason to build it again for obj2
   if (_.has(obj1, k)) return acc;
-  
+
   const valueAfter = v;
   const typeAfter = typeofEx(valueAfter);
   const path = globalPath.concat(k);
   const pathJoined = path.join('.');
   const dif = (typeofEx(v) === 'object') ? 'object_created' : 'created';
 
-  return { ...acc, [k]: { valueAfter, typeAfter, path, pathJoined, dif } };
-}
+  return {
+    ...acc,
+    [k]: {
+      valueAfter, typeAfter, path, pathJoined, dif,
+    },
+  };
+};
 
 const buildDif = (obj1, obj2, globalPath = []) => {
   const result1 = Object.entries(obj1).reduce(buildDifObj1(obj2, globalPath), {});
