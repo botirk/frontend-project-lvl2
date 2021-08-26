@@ -1,6 +1,6 @@
-/* eslint-disable no-use-before-define */
-import { typeofEx } from '../buildDif';
-import { valuesSorted, endStr } from './default';
+/* eslint-disable no-use-before-define, import/extensions */
+import { typeofEx } from '../buildDif.js';
+import { valuesSorted, endStr } from './default.js';
 
 const translate = (value) => {
   switch (typeofEx(value)) {
