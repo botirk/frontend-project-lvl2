@@ -12,7 +12,8 @@ const objectPrefix = (typeBefore, typeAfter) => (
 
 const createdDeletedPostfix = (typeBefore, typeAfter) => (
   (typeBefore === 'undefined' && typeAfter !== 'undefined') ? 'created'
-    : (typeBefore !== 'undefined' && typeAfter === 'undefined') ? 'deleted' : undefined
+    : (typeBefore !== 'undefined' && typeAfter === 'undefined') ? 'deleted' 
+      : undefined
 );
 
 const unchangedPostfix = (valueBefore, valueAfter) => (
@@ -20,16 +21,16 @@ const unchangedPostfix = (valueBefore, valueAfter) => (
 );
 
 const changedPostfix = (typeBefore, typeAfter) => (
-  (typeBefore === 'object') ? 'changed_1'
-    : (typeAfter === 'object') ? 'changed_2'
+  (typeBefore === 'object' && typeAfter !== 'object') ? 'changed_1'
+    : (typeAfter === 'object' && typeBefore !== 'object') ? 'changed_2'
       : 'changed'
 );
 
 const categorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
   const prefix = objectPrefix(typeBefore, typeAfter);
   const postfix = createdDeletedPostfix(typeBefore, typeAfter)
-    || unchangedPostfix(valueBefore, valueAfter)
-    || changedPostfix(typeBefore, typeAfter);
+    ?? unchangedPostfix(valueBefore, valueAfter)
+    ?? changedPostfix(typeBefore, typeAfter);
 
   return `${prefix}${postfix}`;
 };
