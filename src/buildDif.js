@@ -6,18 +6,21 @@ export const typeofEx = (v) => {
   return typeof v;
 };
 
-const cathegorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
-  const isObject = (typeBefore === 'object') || (typeAfter === 'object');
-  const object = isObject ? 'object_' : '';
+const objectPrefix = (typeBefore, typeAfter) => (
+  (typeBefore === 'object' || typeAfter === 'object') ? 'object_' : ''
+);
+
+const categorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
+  const prefix = objectPrefix(typeBefore, typeAfter);
 
   // created new key
-  if (typeBefore === 'undefined' && typeAfter !== 'undefined') return `${object}created`;
+  if (typeBefore === 'undefined' && typeAfter !== 'undefined') return `${prefix}created`;
 
   // deleted key
-  if (typeBefore !== 'undefined' && typeAfter === 'undefined') return `${object}deleted`;
+  if (typeBefore !== 'undefined' && typeAfter === 'undefined') return `${prefix}deleted`;
 
   // unchanged key
-  if (_.isEqual(valueBefore, valueAfter)) return `${object}unchanged`;
+  if (_.isEqual(valueBefore, valueAfter)) return `${prefix}unchanged`;
 
   // changed object key
   if (typeBefore === 'object' && typeAfter === 'object') { return 'object_changed'; }
@@ -41,7 +44,7 @@ const buildDifObj1 = (obj2, globalPath) => (acc, [k, v]) => {
   const path = globalPath.concat(k);
   const pathJoined = path.join('.');
 
-  const dif = cathegorize(valueBefore, typeBefore, valueAfter, typeAfter);
+  const dif = categorize(valueBefore, typeBefore, valueAfter, typeAfter);
   const childDif = (dif === 'object_changed')
     ? buildDif(valueBefore, valueAfter, path) : undefined;
 
