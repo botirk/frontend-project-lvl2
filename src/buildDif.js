@@ -20,10 +20,9 @@ const unchangedPostfix = (valueBefore, valueAfter) => (
 );
 
 const changedPostfix = (typeBefore, typeAfter) => (
-  (typeBefore === 'object' && typeAfter === 'object') ? 'object_changed'
-    : (typeBefore === 'object') ? 'object_changed_1'
-      : (typeAfter === 'object') ? 'object_changed_2'
-        : 'changed'
+  (typeBefore === 'object') ? 'changed_1'
+    : (typeAfter === 'object') ? 'changed_2'
+      : 'changed'
 );
 
 const categorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
