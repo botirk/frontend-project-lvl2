@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define, no-nested-ternary */
 import _ from 'lodash';
 
 export const typeofEx = (v) => {
@@ -10,28 +10,29 @@ const objectPrefix = (typeBefore, typeAfter) => (
   (typeBefore === 'object' || typeAfter === 'object') ? 'object_' : ''
 );
 
+const createdDeletedPostfix = (typeBefore, typeAfter) => (
+  (typeBefore === 'undefined' && typeAfter !== 'undefined') ? 'created'
+    : (typeBefore !== 'undefined' && typeAfter === 'undefined') ? 'deleted' : undefined
+);
+
+const unchangedPostfix = (valueBefore, valueAfter) => (
+  (_.isEqual(valueBefore, valueAfter)) ? 'unchanged' : undefined
+);
+
+const changedPostfix = (typeBefore, typeAfter) => (
+  (typeBefore === 'object' && typeAfter === 'object') ? 'object_changed'
+    : (typeBefore === 'object') ? 'object_changed_1'
+      : (typeAfter === 'object') ? 'object_changed_2'
+        : 'changed'
+);
+
 const categorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
   const prefix = objectPrefix(typeBefore, typeAfter);
+  const postfix = createdDeletedPostfix(typeBefore, typeAfter)
+    || unchangedPostfix(valueBefore, valueAfter)
+    || changedPostfix(typeBefore, typeAfter);
 
-  // created new key
-  if (typeBefore === 'undefined' && typeAfter !== 'undefined') return `${prefix}created`;
-
-  // deleted key
-  if (typeBefore !== 'undefined' && typeAfter === 'undefined') return `${prefix}deleted`;
-
-  // unchanged key
-  if (_.isEqual(valueBefore, valueAfter)) return `${prefix}unchanged`;
-
-  // changed object key
-  if (typeBefore === 'object' && typeAfter === 'object') { return 'object_changed'; }
-
-  // from object to other type
-  if (typeBefore === 'object') { return 'object_changed_1'; }
-
-  // from other type to object
-  if (typeAfter === 'object') { return 'object_changed_2'; }
-
-  return 'changed';
+  return `${prefix}${postfix}`;
 };
 
 const buildDifObj1 = (obj2, globalPath) => (acc, [k, v]) => {
@@ -66,12 +67,12 @@ const buildDifObj1 = (obj2, globalPath) => (acc, [k, v]) => {
 const buildDifObj2 = (obj1, globalPath) => (acc, [k, v]) => {
   // key exists in obj1 = there is no reason to build it again for obj2
   if (_.has(obj1, k)) return acc;
-
+  // key only exists in obj2
   const valueAfter = v;
   const typeAfter = typeofEx(valueAfter);
   const path = globalPath.concat(k);
   const pathJoined = path.join('.');
-  const dif = (typeofEx(v) === 'object') ? 'object_created' : 'created';
+  const dif = (typeAfter === 'object') ? 'object_created' : 'created';
 
   return {
     ...acc,
