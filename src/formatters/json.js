@@ -3,23 +3,23 @@ import _ from 'lodash';
 import { valuesSorted } from './default.js';
 
 const dispatcher = {
-  created: (v) => ({ CREATE: { [v.pathJoin()]: v.valueAfter } }),
-  object_created: (v) => dispatcher.created(v),
-  deleted: (v) => ({ DELETE: { [v.pathJoin()]: v.valueBefore } }),
-  object_deleted: (v) => dispatcher.deleted(v),
-  unchanged: (v) => ({ UNCHANGED: { [v.pathJoin()]: v.valueAfter } }),
-  object_unchanged: (v) => dispatcher.unchanged(v),
-  changed: (v) => ({
+  created: (dif) => ({ CREATE: { [dif.pathJoined]: dif.valueAfter } }),
+  object_created: (div) => dispatcher.created(div),
+  deleted: (dif) => ({ DELETE: { [dif.pathJoined]: dif.valueBefore } }),
+  object_deleted: (dif) => dispatcher.deleted(dif),
+  unchanged: (dif) => ({ UNCHANGED: { [dif.pathJoined]: dif.valueAfter } }),
+  object_unchanged: (dif) => dispatcher.unchanged(dif),
+  changed: (dif) => ({
     UPDATE: {
-      [v.pathJoin()]: {
-        prev: v.valueBefore,
-        after: v.valueAfter,
+      [dif.pathJoined]: {
+        prev: dif.valueBefore,
+        after: dif.valueAfter,
       },
     },
   }),
-  object_changed_1: (v) => dispatcher.changed(v),
-  object_changed_2: (v) => dispatcher.changed(v),
-  object_changed: (v) => dispatcherize(v.changedChild, true),
+  object_changed_1: (dif) => dispatcher.changed(dif),
+  object_changed_2: (dif) => dispatcher.changed(dif),
+  object_changed: (dif) => dispatcherize(dif.childDif, true),
 };
 
 const dispatcherize = (difs, raw = false) => {

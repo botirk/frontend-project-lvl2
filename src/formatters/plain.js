@@ -14,27 +14,28 @@ const translate = (value) => {
 };
 
 const dispatcher = {
-  object_created: (v) => (
-    `Property '${v.pathJoin()}' was added with value: ${translate(v.valueAfter)}`
+  object_created: (dif) => (
+    `Property '${dif.pathJoined}' was added with value: ${translate(dif.valueAfter)}`
   ),
-  created: (v) => dispatcher.object_created(v),
-  object_deleted: (v) => (
-    `Property '${v.pathJoin()}' was removed`
+  created: (dif) => dispatcher.object_created(dif),
+  object_deleted: (dif) => (
+    `Property '${dif.pathJoined}' was removed`
   ),
-  deleted: (v) => dispatcher.object_deleted(v),
+  deleted: (dif) => dispatcher.object_deleted(dif),
   object_unchanged: () => '',
   unchanged: () => '',
-  changed: (v) => (
-    `Property '${v.pathJoin()}' was updated. From ${translate(v.valueBefore)} to ${translate(v.valueAfter)}`
+  changed: (dif) => (
+    `Property '${dif.pathJoined}' was updated. ` +
+    `From ${translate(dif.valueBefore)} to ${translate(dif.valueAfter)}`
   ),
-  object_changed_1: (v) => dispatcher.changed(v),
-  object_changed_2: (v) => dispatcher.changed(v),
-  object_changed: (v) => dispatcherize(v.changedChild),
+  object_changed_1: (dif) => dispatcher.changed(dif),
+  object_changed_2: (dif) => dispatcher.changed(dif),
+  object_changed: (dif) => dispatcherize(dif.childDif),
 };
 
-const dispatcherize = (difs) => valuesSorted(difs).reduce((acc, v) => {
-  if (dispatcher[v.dif] === undefined) throw new Error(`buildDif().dif: ${v.dif}; is not supported`);
-  return acc + endStr(dispatcher[v.dif](v));
+const dispatcherize = (difs) => valuesSorted(difs).reduce((acc, dif) => {
+  if (dispatcher[dif.dif] === undefined) throw new Error(`buildDif().dif: ${dif.dif}; is not supported`);
+  return acc + endStr(dispatcher[dif.dif](dif));
 }, '').trim();
 
 export default dispatcherize;

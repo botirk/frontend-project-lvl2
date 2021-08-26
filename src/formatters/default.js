@@ -56,20 +56,22 @@ const dispatcher = {
     dispatcher.deleted(tabLevel, k, v) + dispatcher.object_created(tabLevel, k, v)
   ),
   object_changed: (tabLevel, k, v) => (
-    tabs(tabLevel + 1) + endStr(`${k}: ${dispatcherizeBraced(v.changedChild, tabLevel + 1)}`)
+    tabs(tabLevel + 1) + endStr(`${k}: ${dispatcherizeBraced(v.childDif, tabLevel + 1)}`)
   ),
 };
 
 // content inside of object
 const dispathcerizeInner = (difs, tabLevel) => entriesSorted(difs).reduce((acc, [k, v]) => {
-  if (dispatcher[v.dif] === undefined) { throw new Error(`buildDif().dif: ${v.dif}; is not supported`); }
+  // buildDif returned new dif, not included inside of dispatcher
+  if (dispatcher[v.dif] === undefined)
+    throw new Error(`buildDif().dif: '${v.dif}' is not supported`);
+  // string by string add differences
   return acc + dispatcher[v.dif](tabLevel, k, v);
 }, '');
 
 // content of object
-const dispatcherizeBraced = (difs, tabLevel = 0) => {
-  const result = `{\n${dispathcerizeInner(difs, tabLevel)}${tabs(tabLevel)}}`;
-  return result.trim();
-};
+const dispatcherizeBraced = (difs, tabLevel = 0) => (
+  `{\n${dispathcerizeInner(difs, tabLevel)}${tabs(tabLevel)}}`.trim()
+);
 
 export default dispatcherizeBraced;
