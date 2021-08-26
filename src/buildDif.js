@@ -12,7 +12,7 @@ const objectPrefix = (typeBefore, typeAfter) => (
 
 const createdDeletedPostfix = (typeBefore, typeAfter) => (
   (typeBefore === 'undefined' && typeAfter !== 'undefined') ? 'created'
-    : (typeBefore !== 'undefined' && typeAfter === 'undefined') ? 'deleted' 
+    : (typeBefore !== 'undefined' && typeAfter === 'undefined') ? 'deleted'
       : undefined
 );
 
