@@ -7,22 +7,27 @@ export const typeofEx = (v) => {
 };
 
 const cathegorize = (valueBefore, typeBefore, valueAfter, typeAfter) => {
-  if (typeBefore === 'undefined' && typeAfter !== 'undefined') {
-    if (typeAfter === 'object') { return 'object_created'; }
-    return 'created';
-  } if (typeBefore !== 'undefined' && typeAfter === 'undefined') {
-    if (typeBefore === 'object') { return 'object_deleted'; }
-    return 'deleted';
-  } if (_.isEqual(valueBefore, valueAfter)) {
-    if (typeAfter === 'object') { return 'object_unchanged'; }
-    return 'unchanged';
-  } if (typeBefore === 'object' && typeAfter === 'object') {
-    return 'object_changed';
-  } if (typeBefore === 'object') {
-    return 'object_changed_1';
-  } if (typeAfter === 'object') {
-    return 'object_changed_2';
-  }
+  const isObject = (typeBefore === 'object') || (typeAfter === 'object');
+  const object = isObject ? 'object_' : '';
+
+  // created new key
+  if (typeBefore === 'undefined' && typeAfter !== 'undefined') return `${object}created`;
+
+  // deleted key
+  if (typeBefore !== 'undefined' && typeAfter === 'undefined') return `${object}deleted`;
+
+  // unchanged key
+  if (_.isEqual(valueBefore, valueAfter)) return `${object}unchanged`;
+
+  // changed object key
+  if (typeBefore === 'object' && typeAfter === 'object') { return 'object_changed'; }
+
+  // from object to other type
+  if (typeBefore === 'object') { return 'object_changed_1'; }
+
+  // from other type to object
+  if (typeAfter === 'object') { return 'object_changed_2'; }
+
   return 'changed';
 };
 
