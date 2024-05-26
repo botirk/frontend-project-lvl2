@@ -4,14 +4,14 @@ Available file formats: .json .yaml .yml .ini \
 Available difference results: default stylish plain json
 
 ## Command examples
-+ bin/index.js __fixtures__/dif_before.json __fixtures__/dif_after.json
-+ bin/index.js __fixtures__/yaml/dif_before.yaml __fixtures__/yaml/dif_after.yaml
-+ bin/index.js __fixtures__/ini/dif_before.ini __fixtures__/ini/dif_after.ini
-+ bin/index.js __fixtures__/json/nested_dif_before.json __fixtures__/json/nested_dif_after.json
-+ bin/index.js --format plain __fixtures__/json/nested_dif_before.json __fixtures__/json/nested_dif_after.json
-+ bin/index.js --format json __fixtures__/json/nested_dif_before.json __fixtures__/json/nested_dif_after.json
-+ bin/index.js __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
-+ bin/index.js --format plain __fixtures__/hexlet/file1.json __fixtures__/hexlet/file2.json
++ bin/index.js \_\_fixtures\_\_/dif_before.json \_\_fixtures\_\_/dif_after.json
++ bin/index.js \_\_fixtures\_\_/yaml/dif_before.yaml \_\_fixtures\_\_/yaml/dif_after.yaml
++ bin/index.js \_\_fixtures\_\_/ini/dif_before.ini \_\_fixtures\_\_/ini/dif_after.ini
++ bin/index.js \_\_fixtures\_\_/json/nested_dif_before.json \_\_fixtures__/json/nested_dif_after.json
++ bin/index.js --format plain \__fixtures__/json/nested_dif_before.json \_\_fixtures__/json/nested_dif_after.json
++ bin/index.js --format json \__fixtures__/json/nested_dif_before.json \_\_fixtures__/json/nested_dif_after.json
++ bin/index.js \_\_fixtures__/hexlet/file1.json \_\_fixtures__/hexlet/file2.json
++ bin/index.js --format plain \_\_fixtures__/hexlet/file1.json \_\_fixtures__/hexlet/file2.json
 
 ## Output examples
 ```
