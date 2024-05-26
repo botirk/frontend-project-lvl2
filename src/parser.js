@@ -1,12 +1,7 @@
-import path from 'path';
-import fs from 'fs';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (file) => {
-  const ext = path.extname(file);
-  const str = fs.readFileSync(file, 'utf-8');
-
+export default (str, ext) => {
   switch (ext) {
     case '.json':
       return JSON.parse(str);
